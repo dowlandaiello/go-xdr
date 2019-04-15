@@ -391,8 +391,10 @@ func (enc *Encoder) encodeFixedArray(v reflect.Value, ignoreOpaque bool) (int, e
 	// Encode each array element.
 	var n int
 	for i := 0; i < v.Len(); i++ {
-		if v.Index(i).IsNil() || !v.Index(i).IsValid() { // Check invalid arr val
-			continue // Skip
+		if v.Kind() == reflect.Chan || v.Kind() == reflect.Func || v.Kind() == reflect.Interface || v.Kind() == reflect.Map || v.Kind() == reflect.Ptr || v.Kind() == reflect.Slice { // Check can be nil
+			if v.Index(i).IsNil() || !v.Index(i).IsValid() { // Check invalid arr val
+				continue // Skip
+			}
 		}
 
 		n2, err := enc.encode(v.Index(i))
