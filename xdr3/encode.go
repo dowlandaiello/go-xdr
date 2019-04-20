@@ -733,9 +733,7 @@ func (enc *Encoder) indirect(v reflect.Value) reflect.Value {
 // documentation for specifics.
 func (enc *Encoder) Encode(v interface{}) (int, error) {
 	if v == nil {
-		msg := "can't marshal nil interface"
-		err := marshalError("Marshal", ErrNilInterface, msg, nil, nil)
-		return 0, err
+		v = []byte{} // Set to nil byte array
 	}
 
 	vv := reflect.ValueOf(v)
